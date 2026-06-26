@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import api from "../api/apiInstance";
+
 const Register = () => {
     const navigate = useNavigate();
 
@@ -9,6 +11,16 @@ const Register = () => {
         email: "",
         password: "",
     });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try{
+            await api.post("/user/register", registerData);
+            navigate("/");
+        }catch(err){
+            console.log(err);
+        }
+    };
 
 
     return (
@@ -33,7 +45,7 @@ const Register = () => {
                         Register
                     </h2>
 
-                    <form className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-5">
 
                         <div>
                             <label className="block mb-2 font-medium">

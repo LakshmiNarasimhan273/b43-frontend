@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import api from "../api/apiInstance";
+
 const Login = () => {
     const navigate = useNavigate();
 
@@ -9,7 +11,21 @@ const Login = () => {
         password: "",
     });
 
- 
+    // api calling function
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // const response = await axios.post("http://localhost:8080/user/login")
+            const response = await api.post("/user/login", loginData);
+
+            const token = response.data.token;
+            localStorage.setItem("token", token);
+            navigate("/home");
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
         <div className="min-h-screen flex bg-gray-100">
@@ -33,8 +49,8 @@ const Login = () => {
                         Login
                     </h2>
 
-                    <form 
-                     className="space-y-5">
+                    <form onSubmit={handleSubmit}
+                        className="space-y-5">
 
                         <div>
                             <label className="block mb-2 font-medium">
